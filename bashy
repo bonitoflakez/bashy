@@ -2,9 +2,10 @@
 
 # get username
 getUser () {
-    getuser=$(who | awk '!seen[$1]++ {printf $1 ", "}')
-    getuser=${getuser%\,*}
-    echo $getuser
+    # getuser=$(who | awk '!seen[$1]++ {printf $1 ", "}')
+    # getuser=${getuser%\,*}
+    # echo $getuser
+    echo $USER
 }
 
 # Get type of OS (Supported: Linux, Mac and BSD)
@@ -29,7 +30,8 @@ betterUptime()
 # get cpu name
 getCpuName()
 {
-    lscpu | grep 'Model name' | cut -f 2 -d ":" | awk '{$1=$1}1'
+    # lscpu | grep 'Model name' | cut -f 2 -d ":" | awk '{$1=$1}1'
+    lscpu | grep 'Model name' | cut -f 2 -d ":" | awk '{$1=$1}1' | head -n1
 }
 
 # get memory
@@ -70,20 +72,23 @@ availPackages() {
 getDistroName()
 {
     grepos=$(uname -o)
-	if [ "$greoos" = "Android" ]; then
-		echo "Android"
-	else
-		cat /etc/os-release | awk -F '"' '/PRETTY_NAME/ { print $2 }'
-	fi
+    if [ "$grepos" = "Android" ]; then
+        echo "Android"
+    else
+        cat /etc/os-release | awk -F '"' '/PRETTY_NAME/ { print $2 }'
+    fi
 }
 
 echo "   user => $(getUser)"
-echo "   host => $(cat /etc/hostname)"
+echo "   host => $(uname -n)"
+if [ "$grepos" = "Android" ]; then
+    echo "  phone => $(getprop ro.product.brand) $(getprop ro.product.model)"
+fi
 echo " distro => $(getDistroName)"
 echo " kernel => $(uname -r)"
 echo "    pkg => $(availPackages)"
 echo " uptime => $(betterUptime)"
 echo "   dirs => $(tree ~/ -L 1|tail -1)"
-echo "  shell => $SHELL"
+echo "  shell => $(basename $SHELL)"
 echo "    cpu => $(getCpuName)"
 echo "    mem => $(getMem)"
