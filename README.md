@@ -6,5 +6,5 @@ A simple system fetch written in bash
 
 ### Installation
 ```sh
-wget https://raw.githubusercontent.com/Nikk-0x11/bashy/main/bashy && chmod +x bashy && sudo mv bashy /usr/bin
+wget https://raw.githubusercontent.com/bonitoflakez/bashy/main/bashy && chmod +x bashy && sudo mv bashy /usr/bin
 ```
